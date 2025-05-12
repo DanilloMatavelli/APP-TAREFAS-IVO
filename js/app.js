@@ -1,22 +1,24 @@
-function updateSaudacao() {
-    const now = new Date();
-    const hours = now.getHours();
+const definirSaudacao = () => {
+    const header = document.querySelector('#saudacaoHeader');
+    setInterval(() => {
+        const now = new Date();
+        const horas = now.getHours();
+        const minutos = now.getMinutes().toString().padStart(2, '0');
+        const segundos = now.getSeconds().toString().padStart(2, '0');
+        const dataAtual = now.toLocaleDateString('pt-BR');
 
-    let greeting = '';
-    if (hours < 12) {
-        greeting = 'Bom dia';
-    } else if (hours < 18) {
-        greeting = 'Boa tarde';
-    } else {
-        greeting = 'Boa noite';
-    }
+        let saudacao;
+        if (horas >= 6 && horas < 12) {
+            saudacao = 'Bom Dia!';
+        } else if (horas >= 12 && horas < 18) {
+            saudacao = 'Boa Tarde!';
+        } else {
+            saudacao = 'Boa Noite!';
+        }
 
-    const dateTimeString = `${greeting}`;
-    document.getElementById('saudacaoHeader').textContent = dateTimeString;
-}
+        header.innerHTML = `<span>${saudacao}</span> <span>${dataAtual} ${horas}:${minutos}:${segundos}</span>`;
+    }, 1000); // Atualiza a cada segundo
+};
 
-// Atualiza imediatamente ao carregar
-updateSaudacao();
-
-// Atualiza a cada segundo
-setInterval(updateSaudacao, 1000);
+// Chamada da função
+definirSaudacao();
