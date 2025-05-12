@@ -22,3 +22,34 @@ const definirSaudacao = () => {
 
 // Chamada da função
 definirSaudacao();
+
+// Função para adicionar uma nova tarefa
+// Carrefar tarefas do localStorage ao iniciar
+const carregarTarefas = () => {
+
+    const taskList = document.querySelector('#taskList');
+    const tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
+
+    tarefas.forEach(tarefa => {
+        const taskItem = document.createElement('div');
+        taskItem.classList.add('task-item');
+        if (tarefa.concluida) {
+            taskItem.classList.add('concluida');
+        }
+        taskItem.innerHTML = tarefas.html;
+        taskList.appendChild(taskItem);
+
+        // Adicionar event listeners aos botões da tarefa
+        taskItem.querySelector('.complete-btn').addEventListener('click', function() {
+            marcarComoConcluida(this);
+        });
+
+        taskItem.querySelector('.edit-btn').addEventListener('click', function() {
+            editarTarefa(this);
+        });
+
+        taskItem.querySelector('.delete-btn').addEventListener('click', function() {
+            excluirTarefa(this);
+        });
+    });
+}
