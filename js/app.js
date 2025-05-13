@@ -152,6 +152,34 @@ window.onload = function () {
         e.preventDefault();
         adicionarTarefa();
     });
+
+    // Adicionando event listeners para os botões
+    document.querySelector('#adicionarTarefaBtn').addEventListener('click', function (e) {
+        e.preventDefault();
+        adicionarTarefa();
+    });
+
+    // Event listeners para os botões de filtro
+    document.querySelector('#filtrarTodasBtn').addEventListener('click', function () {
+        filtrarTarefas('todas');
+    });
+
+    document.querySelector('#filtrarPendentesBtn').addEventListener('click', function () {
+        filtrarTarefas('pendentes');
+    });
+
+    document.querySelector('#filtrarConcluidasBtn').addEventListener('click', function () {
+        filtrarTarefas('concluidas');
+    });
+
+    // Event listeners para os botões de ordenação
+    document.querySelector('#ordenarRecentesBtn').addEventListener('click', function () {
+        ordenarTarefas('recentes');
+    });
+
+    document.querySelector('#ordenarAntigasBtn').addEventListener('click', function () {
+        ordenarTarefas('antigas');
+    });
 };
 
 // Concluir tarefa
@@ -295,5 +323,35 @@ const excluirTarefa = (button) => {
         alert('Tarefa excluida.');
 
     }
+}
 
+// Funções para filtrar tarefas
+const filtrarTarefas = (filtro) => {
+    const tarefas = document.querySelectorAll('.task-item');
+
+    // Percorrer cada tarefa e exibe ou esconde de acordo com o filtro selecionado
+    tarefas.forEach(tarefa => {
+
+        // O Switch verifica o valor do filtro e exibe ou esconde a tarefa
+        // de acordo com o filtro selecionado
+        switch(filtro) {
+            case 'todas':
+                tarefa.style.display = 'block';
+                // O break é usado para sair do switch depois de executar a tarefa
+                // correspondente ao filtro selecionado
+                break;
+            case 'pendentes':
+                // O operador ternário verifica se a tarefa possui a classe 'concluida'
+                // e exibe ou esconde a tarefa de acordo com o filtro selecionado
+                tarefa.style.display = tarefa.classList.contains('concluida') ? 'none' : 'block';
+                break;
+            case 'concluidas':
+                tarefa.style.display = tarefa.classList.contains('concluida') ? 'block' : 'none';
+                break;
+        }
+    });
+}
+
+const ordenarTarefas = (ordem) => {
+    
 }
