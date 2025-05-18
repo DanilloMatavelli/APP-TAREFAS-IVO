@@ -334,7 +334,7 @@ const filtrarTarefas = (filtro) => {
 
         // O Switch verifica o valor do filtro e exibe ou esconde a tarefa
         // de acordo com o filtro selecionado
-        switch(filtro) {
+        switch (filtro) {
             case 'todas':
                 tarefa.style.display = 'block';
                 // O break é usado para sair do switch depois de executar a tarefa
@@ -352,6 +352,44 @@ const filtrarTarefas = (filtro) => {
     });
 }
 
-const ordenarTarefas = (ordem) => {
-    
-}
+function ordenarTarefas(ordem) {
+    // Pega o elemento HTML que contém a lista de tarefas (div com id 'taskList')
+    const lista = document.getElementById('taskList');
+
+    // Pega todos os elementos com a classe 'task-item' dentro da lista e transforma em array(Lista)
+    const tarefas = Array.from(lista.querySelectorAll('.task-item'));
+
+    // Função auxiliar para extrair a data da tarefa e converter para objeto Date do JavaScript
+    function pegarData(tarefa) {
+
+        // Pega o texto do elemento <strong> dentro do <p>, que contém a data no formato "dd/mm/aaaa"
+        const dataTexto = tarefa.querySelector('p strong').textContent;
+
+        // Quebra a string da data (ex: "25/12/2024") em partes separadas pelo '/', criando um array ["25", "12", "2024"]
+        // Em seguida, converte cada uma dessas partes de string para número usando map(Number)
+        // Finalmente, usa desestruturação para armazenar os números em três variáveis: diaTarefa, mesTarefa e anoTarefa
+        const [diaTarefa, mesTarefa, anoTarefa] = dataTexto.split('/').map(Number);
+
+        // Cria e retorna um objeto Date (mes - 1 porque o JS começa do zero)
+        return new Date(anoTarefa, mesTarefa - 1, diaTarefa);
+    }
+
+    // Ordena o array de tarefas com base na data
+    tarefas.sort((tarefa1, tarefa2) => {
+        if (ordem === 'recentes') {
+            // Se o parâmetro for "recentes", coloca as tarefas mais novas primeiro
+            return pegarData(tarefa1) - pegarData(tarefa2); // mais recentes primeiro
+            
+        } else {
+
+            // Se não for "recentes" (qualquer outro valor), coloca as mais antigas primeiro
+            return pegarData(tarefa2) - pegarData(tarefa1); // mais antigas primeiro
+        }
+    });
+
+    // Limpa o conteúdo atual da lista (removendo tarefas antigas do HTML)
+    lista.innerHTML = '<h2>Suas Tarefas</h2>';
+
+    // Reinsere as tarefas no HTML, agora na ordem correta
+    tarefas.forEach(tarefa => lista.appendChild(tarefa));
+};
