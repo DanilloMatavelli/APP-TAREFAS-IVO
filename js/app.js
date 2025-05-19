@@ -351,46 +351,84 @@ const filtrarTarefas = (filtro) => {
         }
     });
 }
+// Minha Lógica
+// function ordenarTarefas(ordem) {
+//     // Pega o elemento HTML que contém a lista de tarefas (div com id 'taskList')
+//     const lista = document.getElementById('taskList');
 
+//     // Pega todos os elementos com a classe 'task-item' dentro da lista e transforma em array(Lista)
+//     const tarefas = Array.from(lista.querySelectorAll('.task-item'));
+//     console.log(tarefas);
+
+//     // Função auxiliar para extrair a data da tarefa e converter para objeto Date do JavaScript
+//     function pegarData(tarefa) {
+
+//         // Pega o texto do elemento <strong> dentro do <p>, que contém a data no formato "dd/mm/aaaa"
+//         const dataTexto = tarefa.querySelector('p strong').textContent;
+
+//         // Pega o texto da hora (ex: "14:30")
+//         const horaTexto = tarefa.querySelector('.taskTime').textContent;
+
+//         // Quebra a string da data (ex: "25/12/2024") em partes separadas pelo '/', criando um array ["25", "12", "2024"]
+//         // Em seguida, converte cada uma dessas partes de string para número usando map(Number)
+//         const [diaTarefa, mesTarefa, anoTarefa] = dataTexto.split('/').map(Number);
+
+//         // Separa hora e minuto
+//         const [hora, minuto] = horaTexto.split(':').map(Number);
+
+//         // Cria e retorna um objeto Date (mes - 1 porque o JS começa do zero)
+//         // Retorna um objeto Date completo com data e hora
+//         return new Date(anoTarefa, mesTarefa - 1, diaTarefa, hora, minuto);
+//     }
+
+
+//     // Ordena o array de tarefas com base na data
+//     tarefas.sort((tarefa1, tarefa2) => {
+//         if (ordem === 'recentes') {
+//             // Se o parâmetro for "recentes", coloca as tarefas mais novas primeiro
+//             return pegarData(tarefa1) - pegarData(tarefa2) || pegarHora(horas1) - pegarHora(horas2); // mais recentes primeiro
+//         } else {
+//             // Se não for "recentes" (qualquer outro valor), coloca as mais antigas primeiro
+//             return pegarData(tarefa2) - pegarData(tarefa1) || pegarHora(horas2) - pegarHora(horas1); // mais antigas primeiro
+//         }
+//     });
+
+//     // Limpa o conteúdo atual da lista (removendo tarefas antigas do HTML)
+//     lista.innerHTML = '<h2>Suas Tarefas</h2>';
+
+//     // Reinsere as tarefas no HTML, agora na ordem correta
+//     tarefas.forEach(tarefa => lista.appendChild(tarefa));
+// };
+
+// Lógica com o Professor
 function ordenarTarefas(ordem) {
-    // Pega o elemento HTML que contém a lista de tarefas (div com id 'taskList')
-    const lista = document.getElementById('taskList');
 
-    // Pega todos os elementos com a classe 'task-item' dentro da lista e transforma em array(Lista)
-    const tarefas = Array.from(lista.querySelectorAll('.task-item'));
-    console.log(tarefas);
+    // Obter a lista de tarefas e os dados do localStorage
+    const taskList = document.querySelector('#taskList');
 
-    // Função auxiliar para extrair a data da tarefa e converter para objeto Date do JavaScript
-    function pegarData(tarefa) {
+    // Converter a coleção de tarefas em um array
+    const tarefas = Array.from(document.querySelectorAll('.task-item'));
 
-        // Pega o texto do elemento <strong> dentro do <p>, que contém a data no formato "dd/mm/aaaa"
-        const dataTexto = tarefa.querySelector('p strong').textContent;
-    
+    // Obter os dados das tarefas do localStorage
+    const dadosTarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
 
-        // Quebra a string da data (ex: "25/12/2024") em partes separadas pelo '/', criando um array ["25", "12", "2024"]
-        // Em seguida, converte cada uma dessas partes de string para número usando map(Number)
-        const [diaTarefa, mesTarefa, anoTarefa] = dataTexto.split('/').map(Number);
+    // Ordenar as tarefas com base na ordem selecionada
+    // O sort() é um método que ordena os elementos de um array
+    // A função de comparação recebe dois argumentos, a e b, que são os elementos a serem comparados
+    tarefas.sort((a,b) => {
+        // Obter os nomes das tarefas
+        const nomeA = a.querySelector('h3').textContent;
+        const nomeB = a.querySelector('h3').textContent;
 
-        // Cria e retorna um objeto Date (mes - 1 porque o JS começa do zero)
-        return new Date(anoTarefa, mesTarefa - 1, diaTarefa);
-    }
+        // Obter as datas das tarefas
+        const tarefaA = dadosTarefas.find(t => t.nome === nomeA);
+        const tarefaB = dadosTarefas.find(t => t.nome === nomeB);
 
-    // Ordena o array de tarefas com base na data
-    tarefas.sort((tarefa1, tarefa2) => {
-        if (ordem === 'recentes') {
-            // Se o parâmetro for "recentes", coloca as tarefas mais novas primeiro
-            return pegarData(tarefa1) - pegarData(tarefa2); // mais recentes primeiro
-            
-        } else {
+        // Converter as datas para objetos Date e comparar padrão ISO 8601(T)
+        const dataA = new Date(`${tarefaA.data}T${tarefaB.hora}`);
+        const dataB = new Date(`${tarefaB.data}T${tarefaA.hora}`);
 
-            // Se não for "recentes" (qualquer outro valor), coloca as mais antigas primeiro
-            return pegarData(tarefa2) - pegarData(tarefa1); // mais antigas primeiro
-        }
+        // Ordenar as tarefas com base na ordem selecionada
+        return ordem === 'antigas' ? dataA - dataB : dataB - dataA;
     });
-
-    // Limpa o conteúdo atual da lista (removendo tarefas antigas do HTML)
-    lista.innerHTML = '<h2>Suas Tarefas</h2>';
-
-    // Reinsere as tarefas no HTML, agora na ordem correta
-    tarefas.forEach(tarefa => lista.appendChild(tarefa));
-};
+}
