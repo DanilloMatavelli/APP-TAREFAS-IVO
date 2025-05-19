@@ -1,0 +1,54 @@
+Data com 1 dia a menos
+
+O problema ocorre devido ao fuso horário.
+Quando você cria um objeto Date a partir de uma string de data (como taskDate), o JavaScript interpreta essa data no fuso horário UTC e depois converte para o fuso horário local.
+Dependendo do seu fuso horário, isso pode fazer com que a data seja exibida com um dia a menos.
+
+javascript
+Copiar
+Editar
+// const dataFormatada = new Date(taskDate).toLocaleDateString('pt-br', {
+//     day: '2-digit',
+//     month: '2-digit',
+//     year: '2-digit'
+// });
+
+Modificar a interface na classificação (textos dos botões)
+Criar os filtros de tarefas de acordo com os vencimentos (data mais próxima do vencimento primeiro)
+
+preventDefault() do Formulário
+
+O método preventDefault() é usado para impedir o comportamento padrão de um evento, como o envio de um formulário.
+
+Quando um botão dentro de um formulário não tem um type especificado, o "submit" é o valor padrão, clicar nele faz com que
+o formulário seja enviado.
+
+Porém, quando um botão tem o atributo type="button", ele não envia o formulário automaticamente.
+
+Melhoria
+
+Simplificação do window.onload()
+
+Remover o addEventListener e inserir na função adicionarTarefas() sem o preventDefault() do Formulário
+
+Event Listeners dos botões duplicados
+
+Viola o princípio DRY (Don't Repeat Yourself).
+Manutenção mais difícil: Se você precisar alterar o comportamento dos botões, terá que fazer a alteração em dois lugares diferentes.
+Potencial para inconsistências: Se você atualizar o código em um lugar e esquecer de atualizar no outro, poderá ter comportamentos diferentes para as mesmas ações.
+
+Melhoria
+Criar uma função separada para adicionar os event listeners e chamar essa função tanto em adicionarTarefa() quanto em carregarTarefas().
+Isso tornaria o código mais organizado, mais fácil de manter e menos propenso a erros.
+
+Editar tarefas
+Não atualiza o localStorage após a edição
+Usa prompt() que tem limitações de usabilidade e estilo
+Seleciona apenas o primeiro parágrafo para edição, o que pode ser problemático se houver múltiplos parágrafos
+Não permite editar a data e hora da tarefa
+
+Melhoria
+Recuperar e atualizar os dados no localStorage
+Permitir editar todos os campos da tarefa
+Atualizar corretamente o HTML e adicionar os event listeners
+Fornece feedback ao usuário sobre o sucesso da operação
