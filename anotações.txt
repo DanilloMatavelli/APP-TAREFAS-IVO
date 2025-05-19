@@ -52,3 +52,8 @@ Recuperar e atualizar os dados no localStorage
 Permitir editar todos os campos da tarefa
 Atualizar corretamente o HTML e adicionar os event listeners
 Fornece feedback ao usuário sobre o sucesso da operação
+
+Armazenar na lixeira as tarefas 
+Criar no HTML um novo botão com Restaurar Tarefas
+Criar uma nova função ArmazenarTarefa 
+dentro dela chamar a função excluir e gravar no localstorage
