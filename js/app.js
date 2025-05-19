@@ -358,16 +358,17 @@ function ordenarTarefas(ordem) {
 
     // Pega todos os elementos com a classe 'task-item' dentro da lista e transforma em array(Lista)
     const tarefas = Array.from(lista.querySelectorAll('.task-item'));
+    console.log(tarefas);
 
     // Função auxiliar para extrair a data da tarefa e converter para objeto Date do JavaScript
     function pegarData(tarefa) {
 
         // Pega o texto do elemento <strong> dentro do <p>, que contém a data no formato "dd/mm/aaaa"
         const dataTexto = tarefa.querySelector('p strong').textContent;
+    
 
         // Quebra a string da data (ex: "25/12/2024") em partes separadas pelo '/', criando um array ["25", "12", "2024"]
         // Em seguida, converte cada uma dessas partes de string para número usando map(Number)
-        // Finalmente, usa desestruturação para armazenar os números em três variáveis: diaTarefa, mesTarefa e anoTarefa
         const [diaTarefa, mesTarefa, anoTarefa] = dataTexto.split('/').map(Number);
 
         // Cria e retorna um objeto Date (mes - 1 porque o JS começa do zero)
